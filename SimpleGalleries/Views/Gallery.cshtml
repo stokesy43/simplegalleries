@@ -1,0 +1,38 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Gallery>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+    Layout = "Master.cshtml";
+}
+
+<section class="py-100">
+    <div class="container">
+        <div class="row">
+            @foreach (var image in Model.Content.Images)
+            {
+                @ImageView(image);
+            }
+
+
+        </div>
+
+    </div>
+</section>
+
+@helper ImageView(IPublishedContent image)
+{
+    if (image.ContentType.Alias == "Folder")
+    {
+        foreach (var folderItem in image.Children)
+        {
+            @ImageView(folderItem);
+        }
+    }
+    else
+    {
+        <div class="col-md-4 mb-4">
+            <a href="@image.Url">
+                <img class="img-fluid" src="@image.Url" alt="" />
+            </a>
+        </div>
+    }
+}
